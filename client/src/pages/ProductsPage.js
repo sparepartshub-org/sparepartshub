@@ -49,7 +49,6 @@ const ProductsPage = () => {
       }
     };
     fetchProducts();
-    // Update URL params
     const params = {};
     Object.entries(filters).forEach(([k, v]) => { if (v && v !== '-createdAt' && k !== 'page') params[k] = v; });
     if (filters.page > 1) params.page = filters.page;
@@ -59,16 +58,17 @@ const ProductsPage = () => {
   const updateFilter = (key, value) => setFilters((prev) => ({ ...prev, [key]: value, page: 1 }));
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-steel-800 mb-6">All Products</h1>
+    <div className="max-w-7xl mx-auto px-4 py-8 animate-fadeIn">
+      <h1 className="text-3xl font-bold text-steel-800 dark:text-gray-200 mb-2">⚙️ All Products</h1>
+      <p className="text-steel-500 dark:text-gray-400 mb-6">Browse thousands of genuine spare parts for bikes 🏍️ and cars 🚗</p>
 
       {/* Search Bar */}
       <div className="flex gap-3 mb-6">
         <div className="flex-1 relative">
-          <FiSearch className="absolute left-3 top-3 text-steel-400" />
+          <FiSearch className="absolute left-3 top-3 text-steel-400 dark:text-gray-500" />
           <input
             type="text"
-            placeholder="Search spare parts..."
+            placeholder="🔍 Search brake pads, oil filters, spark plugs..."
             className="input-field pl-10"
             value={filters.search}
             onChange={(e) => updateFilter('search', e.target.value)}
@@ -84,7 +84,7 @@ const ProductsPage = () => {
 
       {/* Filters Panel */}
       {showFilters && (
-        <div className="card p-4 mb-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="card p-4 mb-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 animate-slideDown">
           <select className="input-field" value={filters.vehicleType} onChange={(e) => updateFilter('vehicleType', e.target.value)}>
             <option value="">All Vehicles</option>
             <option value="bike">🏍️ Bike</option>
@@ -94,14 +94,14 @@ const ProductsPage = () => {
             <option value="">All Categories</option>
             {categories.map((c) => <option key={c._id} value={c._id}>{c.name}</option>)}
           </select>
-          <input type="text" placeholder="Brand" className="input-field" value={filters.brand} onChange={(e) => updateFilter('brand', e.target.value)} />
+          <input type="text" placeholder="Brand (e.g. Bosch)" className="input-field" value={filters.brand} onChange={(e) => updateFilter('brand', e.target.value)} />
           <input type="number" placeholder="Min ₹" className="input-field" value={filters.minPrice} onChange={(e) => updateFilter('minPrice', e.target.value)} />
           <input type="number" placeholder="Max ₹" className="input-field" value={filters.maxPrice} onChange={(e) => updateFilter('maxPrice', e.target.value)} />
           <select className="input-field" value={filters.sort} onChange={(e) => updateFilter('sort', e.target.value)}>
-            <option value="-createdAt">Newest</option>
-            <option value="price">Price: Low to High</option>
-            <option value="-price">Price: High to Low</option>
-            <option value="name">Name: A-Z</option>
+            <option value="-createdAt">🆕 Newest</option>
+            <option value="price">💰 Price: Low to High</option>
+            <option value="-price">💎 Price: High to Low</option>
+            <option value="name">🔤 Name: A-Z</option>
           </select>
         </div>
       )}
@@ -110,14 +110,19 @@ const ProductsPage = () => {
       {loading ? (
         <LoadingSpinner />
       ) : products.length === 0 ? (
-        <div className="text-center py-16 text-steel-500">
-          <p className="text-4xl mb-4">🔍</p>
+        <div className="text-center py-16 text-steel-500 dark:text-gray-400 animate-fadeIn">
+          <p className="text-6xl mb-4">🔍</p>
           <p className="text-lg">No products found. Try adjusting your filters.</p>
+          <p className="text-sm mt-2">Tip: Try searching for "brake pad" or "oil filter" 💡</p>
         </div>
       ) : (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products.map((p) => <ProductCard key={p._id} product={p} />)}
+            {products.map((p, i) => (
+              <div key={p._id} className="animate-slideUp" style={{ animationDelay: `${i * 50}ms` }}>
+                <ProductCard product={p} />
+              </div>
+            ))}
           </div>
           <Pagination page={filters.page} totalPages={totalPages} onPageChange={(p) => setFilters((prev) => ({ ...prev, page: p }))} />
         </>

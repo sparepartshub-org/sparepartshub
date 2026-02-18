@@ -4,7 +4,6 @@
 const Complaint = require('../models/Complaint');
 const User = require('../models/User');
 const { createComplaintSchema, respondComplaintSchema, updateComplaintStatusSchema } = require('../validators/complaint.validator');
-const { sendComplaintResponse } = require('../services/email.service');
 
 /** POST /api/complaints — customer files a complaint */
 exports.createComplaint = async (req, res, next) => {
@@ -104,12 +103,6 @@ exports.respondToComplaint = async (req, res, next) => {
     complaint.responses.push({ user: req.user._id, message: value.message });
     if (complaint.status === 'open') complaint.status = 'in_progress';
     await complaint.save();
-
-    // Send email to customer
-    const customer = await User.findById(complaint.customer);
-    if (customer) {
-      sendComplaintResponse(complaint, customer.email, req.user.name).catch(console.error);
-    }
 
     await complaint.populate('responses.user', 'name role');
     res.json({ message: 'Response added.', complaint });

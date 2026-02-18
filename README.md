@@ -1,6 +1,6 @@
 # 🔧 SparePartsHub — Multi-Vendor Marketplace for Bike & Car Spare Parts
 
-A scalable, full-stack multi-vendor e-commerce platform built with the MERN stack. Customers can browse and purchase bike and car spare parts from multiple registered wholesalers — similar to Blinkit but tailored for the automotive spare parts industry.
+A scalable, full-stack multi-vendor e-commerce platform built with the MERN stack. Customers can browse and purchase bike 🏍️ and car 🚗 spare parts from multiple registered wholesalers — similar to Blinkit but tailored for the automotive spare parts industry.
 
 > **University Final-Year Project**
 
@@ -15,7 +15,7 @@ A scalable, full-stack multi-vendor e-commerce platform built with the MERN stac
 - [Environment Variables](#-environment-variables)
 - [API Endpoints](#-api-endpoints)
 - [User Roles](#-user-roles)
-- [Screenshots](#-screenshots)
+- [Dark Mode & Animations](#-dark-mode--animations)
 - [Future Enhancements](#-future-enhancements)
 
 ---
@@ -35,7 +35,6 @@ A scalable, full-stack multi-vendor e-commerce platform built with the MERN stac
 - Order placement and checkout
 - **Order tracking** (Placed → Confirmed → Shipped → Delivered)
 - File complaints against products or wholesalers
-- Email notifications for order updates
 
 ### 📦 Wholesaler Features
 - Product management (CRUD) with image upload
@@ -46,8 +45,8 @@ A scalable, full-stack multi-vendor e-commerce platform built with the MERN stac
 - Dashboard with sales overview
 
 ### 👑 Admin Features
-- Full analytics dashboard (total sales, users, complaints, top products)
-- Manage all users (activate, deactivate, role changes)
+- Full analytics dashboard with charts (total sales, users, complaints, top products)
+- Manage all users (activate, deactivate, approve wholesalers)
 - Manage all orders across the platform
 - Oversee and resolve complaints
 - Category management (add, edit, delete product categories)
@@ -59,11 +58,22 @@ A scalable, full-stack multi-vendor e-commerce platform built with the MERN stac
 - General platform help and FAQs
 - Falls back to rule-based responses if no AI API key configured
 
-### 📧 Email Notifications
-- Order confirmation emails
-- Order status update notifications
-- Complaint response alerts
-- Powered by Nodemailer (SMTP)
+### 🌙 Dark Mode
+- Full light/dark mode support across all pages and components
+- Persists preference in localStorage
+- Defaults to system preference
+- Smooth transition animations when toggling
+- Sun/Moon toggle button in Navbar
+
+### ✨ Animations & Transitions
+- Fade-in animations for page loads
+- Slide-up animations for cards appearing
+- Hover scale/shadow effects on product cards
+- Smooth transitions on buttons (hover, active states)
+- Loading skeleton animations
+- Cart icon bounce when items added
+- Navbar shadow on scroll
+- Custom Tailwind animations: `animate-fadeIn`, `animate-slideUp`, `animate-bounce-subtle`, `animate-shimmer`, `animate-scale-in`
 
 ---
 
@@ -72,12 +82,11 @@ A scalable, full-stack multi-vendor e-commerce platform built with the MERN stac
 | Layer        | Technology                          |
 |-------------|-------------------------------------|
 | **Frontend** | React 18, React Router v6          |
-| **Styling**  | Tailwind CSS                       |
+| **Styling**  | Tailwind CSS (with dark mode)      |
 | **Backend**  | Node.js, Express.js                |
 | **Database** | MongoDB with Mongoose              |
 | **Auth**     | JWT (access + refresh tokens)      |
 | **Validation** | Joi                             |
-| **Email**    | Nodemailer                         |
 | **File Upload** | Multer                          |
 | **AI Chat**  | OpenAI API (optional) + rule-based fallback |
 
@@ -97,97 +106,41 @@ sparepartshub/
 │   │   │   └── common/
 │   │   │       ├── Footer.js
 │   │   │       ├── LoadingSpinner.js
-│   │   │       ├── Navbar.js
+│   │   │       ├── Navbar.js          # Includes theme toggle
 │   │   │       ├── Pagination.js
 │   │   │       ├── ProductCard.js
 │   │   │       ├── ProtectedRoute.js
 │   │   │       └── StatusBadge.js
 │   │   ├── context/
 │   │   │   ├── AuthContext.js
-│   │   │   └── CartContext.js
+│   │   │   ├── CartContext.js
+│   │   │   └── ThemeContext.js        # Dark mode context
 │   │   ├── pages/
 │   │   │   ├── admin/
-│   │   │   │   ├── AdminCategories.js
-│   │   │   │   ├── AdminComplaints.js
-│   │   │   │   ├── AdminDashboard.js
-│   │   │   │   ├── AdminOrders.js
-│   │   │   │   └── AdminUsers.js
 │   │   │   ├── auth/
-│   │   │   │   ├── LoginPage.js
-│   │   │   │   └── RegisterPage.js
 │   │   │   ├── customer/
-│   │   │   │   ├── CartPage.js
-│   │   │   │   ├── CheckoutPage.js
-│   │   │   │   ├── ComplaintDetailPage.js
-│   │   │   │   ├── ComplaintsPage.js
-│   │   │   │   ├── OrderDetailPage.js
-│   │   │   │   └── OrdersPage.js
 │   │   │   ├── wholesaler/
-│   │   │   │   ├── ProductForm.js
-│   │   │   │   ├── WholesalerComplaints.js
-│   │   │   │   ├── WholesalerDashboard.js
-│   │   │   │   ├── WholesalerOrders.js
-│   │   │   │   └── WholesalerProducts.js
 │   │   │   ├── HomePage.js
 │   │   │   ├── ProductDetailPage.js
 │   │   │   └── ProductsPage.js
 │   │   ├── services/
-│   │   │   ├── admin.service.js
-│   │   │   ├── api.js
-│   │   │   ├── auth.service.js
-│   │   │   ├── category.service.js
-│   │   │   ├── chat.service.js
-│   │   │   ├── complaint.service.js
-│   │   │   ├── order.service.js
-│   │   │   └── product.service.js
 │   │   ├── App.js
-│   │   ├── index.css
+│   │   ├── index.css              # Custom animations & dark mode styles
 │   │   └── index.js
 │   ├── package.json
 │   ├── postcss.config.js
-│   └── tailwind.config.js
+│   └── tailwind.config.js         # Dark mode + custom animations config
 ├── server/                     # Express Backend
 │   ├── config/
-│   │   ├── db.js
-│   │   └── email.js
+│   │   └── db.js
 │   ├── controllers/
-│   │   ├── admin.controller.js
-│   │   ├── auth.controller.js
-│   │   ├── category.controller.js
-│   │   ├── chat.controller.js
-│   │   ├── complaint.controller.js
-│   │   ├── order.controller.js
-│   │   └── product.controller.js
 │   ├── middleware/
-│   │   ├── auth.js
-│   │   ├── errorHandler.js
-│   │   └── upload.js
 │   ├── models/
-│   │   ├── Category.js
-│   │   ├── Chat.js
-│   │   ├── Complaint.js
-│   │   ├── Order.js
-│   │   ├── Product.js
-│   │   └── User.js
 │   ├── routes/
-│   │   ├── admin.routes.js
-│   │   ├── auth.routes.js
-│   │   ├── category.routes.js
-│   │   ├── chat.routes.js
-│   │   ├── complaint.routes.js
-│   │   ├── order.routes.js
-│   │   └── product.routes.js
 │   ├── services/
-│   │   ├── chat.service.js
-│   │   └── email.service.js
+│   │   └── chat.service.js
 │   ├── utils/
-│   │   └── seed.js
 │   ├── validators/
-│   │   ├── auth.validator.js
-│   │   ├── category.validator.js
-│   │   ├── complaint.validator.js
-│   │   ├── order.validator.js
-│   │   └── product.validator.js
 │   ├── .env.example
 │   ├── index.js
 │   └── package.json
@@ -213,7 +166,7 @@ cd sparepartshub
 ```bash
 cd server
 cp .env.example .env
-# Edit .env with your MongoDB URI, JWT secrets, and SMTP credentials
+# Edit .env with your MongoDB URI and JWT secrets
 npm install
 ```
 
@@ -262,10 +215,6 @@ Create a `.env` file in the `server/` directory:
 | `JWT_REFRESH_SECRET` | Secret for refresh tokens | `another_strong_secret` |
 | `JWT_ACCESS_EXPIRY` | Access token expiry | `15m` |
 | `JWT_REFRESH_EXPIRY` | Refresh token expiry | `7d` |
-| `SMTP_HOST` | Email SMTP host | `smtp.gmail.com` |
-| `SMTP_PORT` | Email SMTP port | `587` |
-| `SMTP_USER` | Email address | `you@gmail.com` |
-| `SMTP_PASS` | Email app password | `your_app_password` |
 | `CLIENT_URL` | Frontend URL (CORS) | `http://localhost:3000` |
 | `OPENAI_API_KEY` | OpenAI key for chatbot (optional) | `sk-...` |
 
@@ -279,14 +228,14 @@ Create a `.env` file in the `server/` directory:
 | POST | `/api/auth/register` | Register new user |
 | POST | `/api/auth/login` | Login |
 | POST | `/api/auth/refresh` | Refresh access token |
-| GET | `/api/auth/profile` | Get current user profile |
-| PUT | `/api/auth/profile` | Update profile |
+| GET | `/api/auth/me` | Get current user profile |
+| PUT | `/api/auth/me` | Update profile |
 
 ### Products
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/products` | List products (with filters) |
-| GET | `/api/products/:id` | Product details |
+| GET | `/api/products/detail/:id` | Product details |
 | POST | `/api/products` | Create product (wholesaler) |
 | PUT | `/api/products/:id` | Update product (wholesaler) |
 | DELETE | `/api/products/:id` | Delete product (wholesaler) |
@@ -295,7 +244,7 @@ Create a `.env` file in the `server/` directory:
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/api/orders` | Place order (customer) |
-| GET | `/api/orders` | List user's orders |
+| GET | `/api/orders/my` | List user's orders |
 | GET | `/api/orders/:id` | Order details |
 | PUT | `/api/orders/:id/status` | Update order status |
 
@@ -303,9 +252,9 @@ Create a `.env` file in the `server/` directory:
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/api/complaints` | File complaint (customer) |
-| GET | `/api/complaints` | List complaints |
+| GET | `/api/complaints/my` | List my complaints |
 | GET | `/api/complaints/:id` | Complaint details |
-| PUT | `/api/complaints/:id` | Respond to complaint |
+| POST | `/api/complaints/:id/respond` | Respond to complaint |
 
 ### Categories
 | Method | Endpoint | Description |
@@ -334,15 +283,29 @@ Create a `.env` file in the `server/` directory:
 
 | Role | Capabilities |
 |------|-------------|
-| **Customer** | Browse, search, buy products, track orders, file complaints, use chatbot |
-| **Wholesaler** | List/manage products, fulfill orders, respond to complaints |
-| **Admin** | Full platform control, analytics, user management, category management |
+| **Customer** 🛒 | Browse, search, buy products, track orders, file complaints, use chatbot |
+| **Wholesaler** 🏪 | List/manage products, fulfill orders, respond to complaints |
+| **Admin** 👑 | Full platform control, analytics, user management, category management |
 
 ---
 
-## 📸 Screenshots
+## 🌙 Dark Mode & Animations
 
-> _Add screenshots of your running application here_
+### Dark Mode
+- Toggle via the sun/moon 🌞🌙 icon in the navigation bar
+- Preference is saved to `localStorage` and persists across sessions
+- Falls back to your system's preferred color scheme on first visit
+- All components, pages, modals, inputs, and the chatbot fully support dark mode
+- Implemented using Tailwind CSS `darkMode: 'class'` strategy
+
+### Animations
+- **Page transitions:** Smooth fade-in effect on route changes
+- **Card animations:** Slide-up with staggered delays for list items
+- **Hover effects:** Scale + shadow on product cards, buttons
+- **Loading states:** Shimmer/skeleton animation for loading placeholders
+- **Cart feedback:** Bounce animation on cart count badge
+- **Navbar:** Dynamic shadow on scroll
+- Custom keyframes defined in `tailwind.config.js`
 
 ---
 
@@ -365,4 +328,4 @@ This project is developed as a university final-year project.
 
 ---
 
-**Built with ❤️ using the MERN Stack**
+**Built with ❤️ using the MERN Stack** 🔧⚙️🏍️🚗

@@ -7,9 +7,9 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
-        className="px-3 py-1.5 rounded-lg border border-steel-300 text-sm disabled:opacity-50 hover:bg-steel-100 transition"
+        className="px-3 py-1.5 rounded-lg border border-steel-300 dark:border-gray-600 text-sm disabled:opacity-50 hover:bg-steel-100 dark:hover:bg-gray-700 dark:text-gray-300 transition"
       >
-        Previous
+        ← Previous
       </button>
       {[...Array(totalPages)].map((_, i) => (
         <button
@@ -18,7 +18,7 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
           className={`px-3 py-1.5 rounded-lg text-sm transition ${
             page === i + 1
               ? 'bg-primary-500 text-white'
-              : 'border border-steel-300 hover:bg-steel-100'
+              : 'border border-steel-300 dark:border-gray-600 hover:bg-steel-100 dark:hover:bg-gray-700 dark:text-gray-300'
           }`}
         >
           {i + 1}
@@ -27,9 +27,9 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
-        className="px-3 py-1.5 rounded-lg border border-steel-300 text-sm disabled:opacity-50 hover:bg-steel-100 transition"
+        className="px-3 py-1.5 rounded-lg border border-steel-300 dark:border-gray-600 text-sm disabled:opacity-50 hover:bg-steel-100 dark:hover:bg-gray-700 dark:text-gray-300 transition"
       >
-        Next
+        Next →
       </button>
     </div>
   );

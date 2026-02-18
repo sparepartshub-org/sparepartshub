@@ -5,7 +5,6 @@ const Order = require('../models/Order');
 const Product = require('../models/Product');
 const User = require('../models/User');
 const { createOrderSchema, updateOrderStatusSchema } = require('../validators/order.validator');
-const { sendOrderConfirmation, sendOrderStatusUpdate } = require('../services/email.service');
 
 /** Generate unique order number */
 const generateOrderNumber = () => {
@@ -65,9 +64,6 @@ exports.createOrder = async (req, res, next) => {
       statusHistory: [{ status: 'placed', note: 'Order placed by customer' }],
       estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // +7 days
     });
-
-    // Send confirmation email
-    sendOrderConfirmation(order, req.user.email).catch(console.error);
 
     res.status(201).json({ message: 'Order placed successfully!', order });
   } catch (err) {
@@ -138,12 +134,6 @@ exports.updateOrderStatus = async (req, res, next) => {
     }
 
     await order.save();
-
-    // Email notification
-    const customer = await User.findById(order.customer);
-    if (customer) {
-      sendOrderStatusUpdate(order, customer.email).catch(console.error);
-    }
 
     res.json({ message: 'Order status updated.', order });
   } catch (err) {

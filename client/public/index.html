@@ -4,10 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#1e40af" />
-  <meta name="description" content="SparePartsHub — Multi-vendor marketplace for bike and car spare parts" />
-  <title>SparePartsHub</title>
+  <meta name="description" content="SparePartsHub — Multi-vendor marketplace for bike and car spare parts 🔧🏍️🚗" />
+  <title>🔧 SparePartsHub — Auto Parts Marketplace</title>
+  <script>
+    // Apply dark mode before page renders to prevent flash
+    try {
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
+  </script>
 </head>
-<body class="bg-steel-50">
+<body class="bg-steel-50 dark:bg-gray-900 transition-colors">
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
 </body>

@@ -46,9 +46,9 @@ function App() {
     <Router>
       <AuthProvider>
         <CartProvider>
-          <div className="flex flex-col min-h-screen bg-gray-50">
+          <div className="flex flex-col min-h-screen bg-steel-50 dark:bg-gray-900 transition-colors duration-300">
             <Navbar />
-            <main className="flex-grow">
+            <main className="flex-grow animate-fadeIn">
               <Routes>
                 {/* ─── Public Routes ─── */}
                 <Route path="/" element={<HomePage />} />
@@ -151,11 +151,11 @@ function App() {
                 {/* ─── 404 ─── */}
                 <Route path="*" element={
                   <div className="flex items-center justify-center min-h-[60vh]">
-                    <div className="text-center">
-                      <h1 className="text-6xl font-bold text-gray-300 mb-4">404</h1>
-                      <p className="text-xl text-gray-500 mb-6">Page not found</p>
-                      <a href="/" className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
-                        Go Home
+                    <div className="text-center animate-fadeIn">
+                      <h1 className="text-6xl font-bold text-gray-300 dark:text-gray-600 mb-4">404</h1>
+                      <p className="text-xl text-gray-500 dark:text-gray-400 mb-6">🔍 Page not found</p>
+                      <a href="/" className="btn-primary">
+                        🏠 Go Home
                       </a>
                     </div>
                   </div>

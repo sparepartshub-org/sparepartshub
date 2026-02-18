@@ -4,31 +4,78 @@
 
 @layer base {
   body {
-    @apply bg-steel-50 text-steel-800 antialiased;
+    @apply bg-steel-50 text-steel-800 antialiased transition-colors duration-300;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .dark body,
+  html.dark body {
+    @apply bg-gray-900 text-gray-100;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md;
+    @apply bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98];
   }
   .btn-secondary {
-    @apply bg-steel-200 hover:bg-steel-300 text-steel-700 font-semibold py-2.5 px-6 rounded-lg transition-all duration-200;
+    @apply bg-steel-200 hover:bg-steel-300 text-steel-700 font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600;
   }
   .btn-accent {
-    @apply bg-accent-400 hover:bg-accent-500 text-steel-900 font-semibold py-2.5 px-6 rounded-lg transition-all duration-200;
+    @apply bg-accent-400 hover:bg-accent-500 text-steel-900 font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98];
   }
   .btn-danger {
-    @apply bg-red-500 hover:bg-red-600 text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-200;
+    @apply bg-red-500 hover:bg-red-600 text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98];
   }
   .input-field {
-    @apply w-full px-4 py-2.5 border border-steel-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white;
+    @apply w-full px-4 py-2.5 border border-steel-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:placeholder-gray-400;
   }
   .card {
-    @apply bg-white rounded-xl shadow-sm border border-steel-100 overflow-hidden;
+    @apply bg-white rounded-xl shadow-sm border border-steel-100 overflow-hidden transition-all duration-300 dark:bg-gray-800 dark:border-gray-700;
   }
   .badge {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
   }
+}
+
+/* Page transition animations */
+.animate-page {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Skeleton loading */
+.skeleton {
+  @apply bg-steel-200 dark:bg-gray-700 rounded;
+  background-image: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+/* Cart bounce */
+.cart-bounce {
+  animation: bounce-subtle 0.6s ease-in-out;
+}
+
+/* Smooth theme transition */
+html {
+  @apply transition-colors duration-300;
+}
+
+html.dark {
+  @apply bg-gray-900;
+  color-scheme: dark;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-steel-100 dark:bg-gray-800;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-steel-300 dark:bg-gray-600 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-steel-400 dark:bg-gray-500;
 }

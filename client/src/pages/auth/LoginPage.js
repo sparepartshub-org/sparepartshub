@@ -15,8 +15,8 @@ const LoginPage = () => {
     setLoading(true);
     try {
       const data = await login(form);
-      toast.success('Welcome back!');
-      const routes = { admin: '/admin/dashboard', wholesaler: '/wholesaler/dashboard', customer: '/products' };
+      toast.success('Welcome back! 🔧');
+      const routes = { admin: '/admin', wholesaler: '/wholesaler', customer: '/products' };
       navigate(routes[data.user.role] || '/');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Login failed');
@@ -26,17 +26,17 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 animate-fadeIn">
       <div className="card p-8 w-full max-w-md">
         <div className="text-center mb-6">
           <GiAutoRepair className="text-primary-500 text-4xl mx-auto mb-2" />
-          <h1 className="text-2xl font-bold text-steel-800">Welcome Back</h1>
-          <p className="text-steel-500 text-sm">Sign in to your SparePartsHub account</p>
+          <h1 className="text-2xl font-bold text-steel-800 dark:text-gray-200">🔑 Welcome Back</h1>
+          <p className="text-steel-500 dark:text-gray-400 text-sm">Sign in to your SparePartsHub account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-steel-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">📧 Email</label>
             <input
               type="email"
               className="input-field"
@@ -47,7 +47,7 @@ const LoginPage = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-steel-700 mb-1">Password</label>
+            <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">🔒 Password</label>
             <input
               type="password"
               className="input-field"
@@ -58,21 +58,21 @@ const LoginPage = () => {
             />
           </div>
           <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-50">
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? '⏳ Signing in...' : '🚀 Sign In'}
           </button>
         </form>
 
-        <p className="text-center text-sm text-steel-500 mt-4">
+        <p className="text-center text-sm text-steel-500 dark:text-gray-400 mt-4">
           Don't have an account?{' '}
           <Link to="/register" className="text-primary-500 font-semibold hover:underline">Register</Link>
         </p>
 
         {/* Demo credentials */}
-        <div className="mt-6 p-3 bg-steel-50 rounded-lg text-xs text-steel-500">
-          <p className="font-semibold mb-1">Demo Accounts:</p>
-          <p>Admin: admin@sparepartshub.com / admin123</p>
-          <p>Wholesaler: wholesaler@sparepartshub.com / wholesaler123</p>
-          <p>Customer: customer@sparepartshub.com / customer123</p>
+        <div className="mt-6 p-3 bg-steel-50 dark:bg-gray-700 rounded-lg text-xs text-steel-500 dark:text-gray-400">
+          <p className="font-semibold mb-1">🧪 Demo Accounts:</p>
+          <p>👑 Admin: admin@sparepartshub.com / admin123</p>
+          <p>🏪 Wholesaler: wholesaler@sparepartshub.com / wholesaler123</p>
+          <p>🛒 Customer: customer@sparepartshub.com / customer123</p>
         </div>
       </div>
     </div>

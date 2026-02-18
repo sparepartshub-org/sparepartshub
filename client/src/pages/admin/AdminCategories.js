@@ -24,10 +24,10 @@ const AdminCategories = () => {
     try {
       if (editId) {
         await categoryService.updateCategory(editId, form);
-        toast.success('Category updated');
+        toast.success('Category updated ✅');
       } else {
         await categoryService.createCategory(form);
-        toast.success('Category created');
+        toast.success('Category created ✅');
       }
       setForm({ name: '', description: '', vehicleType: 'both' });
       setEditId(null);
@@ -46,7 +46,7 @@ const AdminCategories = () => {
     if (!window.confirm('Delete this category?')) return;
     try {
       await categoryService.deleteCategory(id);
-      toast.success('Deleted');
+      toast.success('Deleted ✅');
       fetchCategories();
     } catch { toast.error('Failed'); }
   };
@@ -54,27 +54,27 @@ const AdminCategories = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-steel-800 mb-6">Manage Categories</h1>
+    <div className="max-w-4xl mx-auto px-4 py-8 animate-fadeIn">
+      <h1 className="text-3xl font-bold text-steel-800 dark:text-gray-200 mb-6">🏷️ Manage Categories</h1>
 
       <form onSubmit={handleSubmit} className="card p-4 mb-6 flex flex-wrap gap-3 items-end">
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium text-steel-700 mb-1">Name</label>
+          <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">Name</label>
           <input type="text" className="input-field" required value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })} />
         </div>
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-sm font-medium text-steel-700 mb-1">Description</label>
+          <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">Description</label>
           <input type="text" className="input-field" value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-steel-700 mb-1">Type</label>
+          <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">Type</label>
           <select className="input-field" value={form.vehicleType}
             onChange={(e) => setForm({ ...form, vehicleType: e.target.value })}>
-            <option value="both">Both</option>
-            <option value="bike">Bike</option>
-            <option value="car">Car</option>
+            <option value="both">🔧 Both</option>
+            <option value="bike">🏍️ Bike</option>
+            <option value="car">🚗 Car</option>
           </select>
         </div>
         <button type="submit" className="btn-primary flex items-center gap-1">
@@ -86,15 +86,15 @@ const AdminCategories = () => {
       </form>
 
       <div className="space-y-2">
-        {categories.map((cat) => (
-          <div key={cat._id} className="card p-4 flex items-center justify-between">
+        {categories.map((cat, i) => (
+          <div key={cat._id} className="card p-4 flex items-center justify-between hover:shadow-md transition-all duration-300 animate-slideUp" style={{ animationDelay: `${i * 50}ms` }}>
             <div>
-              <h3 className="font-semibold text-steel-800">{cat.name}</h3>
-              <p className="text-xs text-steel-500">{cat.vehicleType} • {cat.description}</p>
+              <h3 className="font-semibold text-steel-800 dark:text-gray-200">⚙️ {cat.name}</h3>
+              <p className="text-xs text-steel-500 dark:text-gray-400">{cat.vehicleType === 'bike' ? '🏍️' : cat.vehicleType === 'car' ? '🚗' : '🔧'} {cat.vehicleType} • {cat.description}</p>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => handleEdit(cat)} className="text-blue-500 hover:text-blue-700"><FiEdit2 /></button>
-              <button onClick={() => handleDelete(cat._id)} className="text-red-500 hover:text-red-700"><FiTrash2 /></button>
+              <button onClick={() => handleEdit(cat)} className="text-blue-500 hover:text-blue-700 transition"><FiEdit2 /></button>
+              <button onClick={() => handleDelete(cat._id)} className="text-red-500 hover:text-red-700 transition"><FiTrash2 /></button>
             </div>
           </div>
         ))}

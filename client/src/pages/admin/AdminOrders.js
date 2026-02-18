@@ -23,7 +23,7 @@ const AdminOrders = () => {
   const handleStatusUpdate = async (orderId, status) => {
     try {
       await orderService.updateStatus(orderId, { status });
-      toast.success(`Order ${status}`);
+      toast.success(`Order ${status} ✅`);
       fetchOrders();
     } catch { toast.error('Failed'); }
   };
@@ -31,24 +31,24 @@ const AdminOrders = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-steel-800 mb-6">All Orders</h1>
+    <div className="max-w-7xl mx-auto px-4 py-8 animate-fadeIn">
+      <h1 className="text-3xl font-bold text-steel-800 dark:text-gray-200 mb-6">📦 All Orders</h1>
 
       <div className="mb-6">
         <select className="input-field w-auto" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-          <option value="">All Statuses</option>
-          <option value="placed">Placed</option>
-          <option value="confirmed">Confirmed</option>
-          <option value="shipped">Shipped</option>
-          <option value="delivered">Delivered</option>
-          <option value="cancelled">Cancelled</option>
+          <option value="">🔄 All Statuses</option>
+          <option value="placed">📦 Placed</option>
+          <option value="confirmed">✅ Confirmed</option>
+          <option value="shipped">🚚 Shipped</option>
+          <option value="delivered">🏠 Delivered</option>
+          <option value="cancelled">❌ Cancelled</option>
         </select>
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-steel-100 text-steel-600">
+            <tr className="bg-steel-100 dark:bg-gray-700 text-steel-600 dark:text-gray-300">
               <th className="text-left p-3">Order #</th>
               <th className="text-left p-3">Customer</th>
               <th className="text-left p-3">Items</th>
@@ -60,24 +60,24 @@ const AdminOrders = () => {
           </thead>
           <tbody>
             {orders.map((order) => (
-              <tr key={order._id} className="border-b border-steel-100 hover:bg-steel-50">
-                <td className="p-3 font-medium">{order.orderNumber}</td>
-                <td className="p-3">{order.customer?.name}</td>
-                <td className="p-3 text-steel-500">{order.items.length}</td>
+              <tr key={order._id} className="border-b border-steel-100 dark:border-gray-700 hover:bg-steel-50 dark:hover:bg-gray-800 transition">
+                <td className="p-3 font-medium dark:text-gray-200">{order.orderNumber}</td>
+                <td className="p-3 dark:text-gray-300">{order.customer?.name}</td>
+                <td className="p-3 text-steel-500 dark:text-gray-400">{order.items.length}</td>
                 <td className="p-3"><StatusBadge status={order.status} /></td>
-                <td className="p-3 text-right font-semibold">₹{order.totalAmount.toLocaleString()}</td>
-                <td className="p-3 text-right text-steel-400">{new Date(order.createdAt).toLocaleDateString()}</td>
+                <td className="p-3 text-right font-semibold dark:text-gray-200">₹{order.totalAmount.toLocaleString()}</td>
+                <td className="p-3 text-right text-steel-400 dark:text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</td>
                 <td className="p-3 text-center">
                   <select
-                    className="text-xs border rounded px-2 py-1"
+                    className="text-xs border dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 rounded px-2 py-1"
                     value=""
                     onChange={(e) => e.target.value && handleStatusUpdate(order._id, e.target.value)}
                   >
                     <option value="">Update...</option>
-                    {order.status === 'placed' && <option value="confirmed">Confirm</option>}
-                    {order.status === 'confirmed' && <option value="shipped">Ship</option>}
-                    {order.status === 'shipped' && <option value="delivered">Deliver</option>}
-                    {['placed', 'confirmed'].includes(order.status) && <option value="cancelled">Cancel</option>}
+                    {order.status === 'placed' && <option value="confirmed">✅ Confirm</option>}
+                    {order.status === 'confirmed' && <option value="shipped">🚚 Ship</option>}
+                    {order.status === 'shipped' && <option value="delivered">🏠 Deliver</option>}
+                    {['placed', 'confirmed'].includes(order.status) && <option value="cancelled">❌ Cancel</option>}
                   </select>
                 </td>
               </tr>
