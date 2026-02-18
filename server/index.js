@@ -41,6 +41,24 @@ app.use('/api/complaints', require('./routes/complaint.routes'));
 app.use('/api/admin', require('./routes/admin.routes'));
 app.use('/api/chat', require('./routes/chat.routes'));
 
+// Root route
+app.get('/', (req, res) => res.json({
+  name: '🔧 SparePartsHub API',
+  version: '1.0.0',
+  description: 'Multi-vendor marketplace for bike, car & tractor spare parts 🇮🇳',
+  status: '✅ Running',
+  endpoints: {
+    auth: '/api/auth',
+    products: '/api/products',
+    orders: '/api/orders',
+    categories: '/api/categories',
+    complaints: '/api/complaints',
+    admin: '/api/admin',
+    chat: '/api/chat',
+    health: '/api/health'
+  }
+}));
+
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
