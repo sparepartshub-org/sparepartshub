@@ -5,6 +5,15 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import toast from 'react-hot-toast';
 import { FiEdit2, FiTrash2, FiPlus } from 'react-icons/fi';
 
+const vehicleEmoji = (type) => {
+  switch (type) {
+    case 'bike': return '🏍️';
+    case 'car': return '🚗';
+    case 'tractor': return '🚜';
+    default: return '🔧';
+  }
+};
+
 const WholesalerProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,8 +80,8 @@ const WholesalerProducts = () => {
                     </div>
                   </td>
                   <td className="p-3 text-steel-600 dark:text-gray-400">{p.category?.name}</td>
-                  <td className="p-3"><span className="badge bg-steel-100 text-steel-600 dark:bg-gray-700 dark:text-gray-300">{p.vehicleType === 'bike' ? '🏍️' : '🚗'} {p.vehicleType}</span></td>
-                  <td className="p-3 text-right font-semibold dark:text-gray-200">₹{p.price.toLocaleString()}</td>
+                  <td className="p-3"><span className="badge bg-steel-100 text-steel-600 dark:bg-gray-700 dark:text-gray-300">{vehicleEmoji(p.vehicleType)} {p.vehicleType}</span></td>
+                  <td className="p-3 text-right font-semibold dark:text-gray-200">₹{p.price.toLocaleString('en-IN')}</td>
                   <td className="p-3 text-right">
                     <span className={p.stock > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-500'}>{p.stock}</span>
                   </td>

@@ -11,11 +11,12 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true, minlength: 6 },
     role: { type: String, enum: ['admin', 'wholesaler', 'customer'], default: 'customer' },
     phone: { type: String, trim: true },
+    whatsappNumber: { type: String, trim: true }, // WhatsApp number for dealers
     address: {
       street: String,
       city: String,
       state: String,
-      zipCode: String,
+      pinCode: String,
       country: { type: String, default: 'India' },
     },
     // Wholesaler-specific fields

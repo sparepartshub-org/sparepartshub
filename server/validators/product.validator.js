@@ -10,12 +10,14 @@ const createProductSchema = Joi.object({
   comparePrice: Joi.number().positive().allow(null),
   category: Joi.string().required(), // ObjectId as string
   brand: Joi.string().trim().min(1).max(100).required(),
-  vehicleType: Joi.string().valid('bike', 'car').required(),
+  vehicleType: Joi.string().valid('bike', 'car', 'tractor').required(),
   vehicleMake: Joi.string().trim().max(100).allow(''),
   vehicleModel: Joi.string().trim().max(100).allow(''),
   partNumber: Joi.string().trim().max(100).allow(''),
   stock: Joi.number().integer().min(0).required(),
   tags: Joi.array().items(Joi.string().trim()).max(10),
+  dealerState: Joi.string().trim().max(100).allow(''),
+  dealerCity: Joi.string().trim().max(100).allow(''),
 });
 
 const updateProductSchema = createProductSchema.fork(

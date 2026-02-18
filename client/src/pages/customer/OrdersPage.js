@@ -37,7 +37,7 @@ const OrdersPage = () => {
               </div>
               <div className="flex items-center justify-between text-sm text-steel-500 dark:text-gray-400">
                 <span>{order.items.length} item(s) • {new Date(order.createdAt).toLocaleDateString()}</span>
-                <span className="font-bold text-primary-500 text-lg">₹{order.totalAmount.toLocaleString()}</span>
+                <span className="font-bold text-primary-500 text-lg">₹{order.totalAmount.toLocaleString('en-IN')}</span>
               </div>
             </Link>
           ))}

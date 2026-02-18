@@ -78,7 +78,7 @@ const processMessage = async (message, userId) => {
 
   // --- Categories / help ---
   if (msg.includes('categories') || msg.includes('what do you sell') || msg.includes('what parts')) {
-    return "🔧 We sell spare parts for **bikes** and **cars**!\n\nCategories include:\n• Engine Parts\n• Brake Systems\n• Electrical Components\n• Body Parts\n• Suspension\n• Filters & Fluids\n• Transmission\n\nUse the search bar or browse by category to find what you need!";
+    return "🔧 We sell spare parts for **bikes**, **cars**, and **tractors** across India! 🇮🇳\n\nCategories include:\n• Engine Parts\n• Brake Systems\n• Electrical Components\n• Body Parts\n• Suspension\n• Filters & Fluids\n• Transmission\n• Tractor Hydraulics\n• Tractor PTO & Implements\n\nBrands: Hero, Bajaj, TVS, Royal Enfield, Maruti Suzuki, Tata, Mahindra, Swaraj, John Deere and more!\n\nUse the search bar or browse by category to find what you need!";
   }
 
   // --- Greetings ---
@@ -93,7 +93,7 @@ const processMessage = async (message, userId) => {
 
   // --- Delivery ---
   if (msg.includes('delivery') || msg.includes('shipping') || msg.includes('how long')) {
-    return "🚚 **Delivery Information:**\n\n• Standard delivery: 3-7 business days\n• Shipping is calculated at checkout based on your location\n• You'll receive tracking updates via email\n• Cash on Delivery (COD) available!\n\nWant to track a specific order? Give me the order number!";
+    return "🚚 **Delivery Information (India):**\n\n• Metro cities (Delhi, Mumbai, Bangalore, Chennai, etc.): 3-5 business days\n• Other cities & towns: 5-7 business days\n• Remote/rural areas: 7-10 business days\n• Free shipping on orders above ₹2,000\n• Flat ₹99 shipping for orders under ₹2,000\n• Cash on Delivery (COD) available across India! 💵\n• We ship via Delhivery, DTDC, BlueDart & India Post\n\nWant to track a specific order? Give me the order number!";
   }
 
   // --- Returns ---

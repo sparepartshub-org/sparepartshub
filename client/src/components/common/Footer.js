@@ -13,14 +13,18 @@ const Footer = () => (
             🔧 SparePartsHub
           </div>
           <p className="text-sm leading-relaxed">
-            India's trusted multi-vendor marketplace for premium bike 🏍️ and car 🚗 spare parts.
-            Genuine products from verified wholesalers, delivered to your doorstep. 🚚
+            India's trusted multi-vendor marketplace for premium bike 🏍️, car 🚗, and tractor 🚜 spare parts.
+            Genuine products from verified dealers, delivered across India. 🚚
           </p>
           <div className="flex gap-3 mt-4">
             <span className="text-2xl">🏍️</span>
             <span className="text-2xl">🚗</span>
-            <span className="text-2xl">🛠️</span>
+            <span className="text-2xl">🚜</span>
             <span className="text-2xl">⚙️</span>
+          </div>
+          <div className="mt-4 inline-flex items-center gap-2 bg-orange-600/20 border border-orange-500/30 rounded-lg px-3 py-1.5">
+            <span className="text-lg">🇮🇳</span>
+            <span className="text-sm font-semibold text-orange-300">Proudly Made in India</span>
           </div>
         </div>
 
@@ -31,7 +35,8 @@ const Footer = () => (
             <li><Link to="/products" className="hover:text-white transition">🛒 All Products</Link></li>
             <li><Link to="/products?vehicleType=bike" className="hover:text-white transition">🏍️ Bike Parts</Link></li>
             <li><Link to="/products?vehicleType=car" className="hover:text-white transition">🚗 Car Parts</Link></li>
-            <li><Link to="/register" className="hover:text-white transition">📝 Register as Wholesaler</Link></li>
+            <li><Link to="/products?vehicleType=tractor" className="hover:text-white transition">🚜 Tractor Parts</Link></li>
+            <li><Link to="/register" className="hover:text-white transition">📝 Register as Dealer</Link></li>
           </ul>
         </div>
 
@@ -43,7 +48,7 @@ const Footer = () => (
             <li className="hover:text-white transition cursor-pointer">🛞 Tires & Wheels</li>
             <li className="hover:text-white transition cursor-pointer">🛢️ Engine & Oil</li>
             <li className="hover:text-white transition cursor-pointer">💡 Lights & Indicators</li>
-            <li className="hover:text-white transition cursor-pointer">🔩 Brake Systems</li>
+            <li className="hover:text-white transition cursor-pointer">🚜 Tractor Hydraulics</li>
           </ul>
         </div>
 
@@ -52,15 +57,17 @@ const Footer = () => (
           <h4 className="text-white font-semibold mb-3">📞 Contact Us</h4>
           <ul className="space-y-2 text-sm">
             <li>📧 support@sparepartshub.com</li>
-            <li>📱 +91-1234567890</li>
-            <li>🕐 Mon-Sat: 9:00 AM - 7:00 PM</li>
-            <li>📍 Mumbai, Maharashtra, India</li>
+            <li>📱 +91-1800-123-4567 (Toll Free)</li>
+            <li>💬 WhatsApp: +91-9876543210</li>
+            <li>🕐 Mon-Sat: 9:00 AM - 7:00 PM IST</li>
+            <li>📍 Kashmere Gate Auto Market, Delhi 110006, India</li>
           </ul>
           <div className="mt-4">
             <p className="text-xs text-steel-400">
-              🔒 100% Secure Payments<br/>
-              🚚 Free Shipping on orders above ₹2000<br/>
-              ✅ Genuine Product Guarantee
+              💵 Cash on Delivery Available across India<br/>
+              🚚 Free Shipping on orders above ₹2,000<br/>
+              ✅ Genuine Product Guarantee<br/>
+              🔄 7-Day Easy Returns
             </p>
           </div>
         </div>
@@ -69,7 +76,7 @@ const Footer = () => (
       <div className="border-t border-steel-700 mt-8 pt-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-center">
-            © {new Date().getFullYear()} SparePartsHub. All rights reserved. 🏁
+            © {new Date().getFullYear()} SparePartsHub. All rights reserved. 🇮🇳 Made in India with ❤️
           </p>
           <div className="flex gap-4 text-sm">
             <span className="hover:text-white transition cursor-pointer">Privacy Policy</span>

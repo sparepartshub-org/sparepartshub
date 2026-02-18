@@ -4,6 +4,15 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import toast from 'react-hot-toast';
 import { FiSearch, FiCheck, FiX } from 'react-icons/fi';
 
+const roleDisplay = (role) => {
+  switch (role) {
+    case 'admin': return { label: '👑 Admin', bg: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300' };
+    case 'wholesaler': return { label: '🏪 Dealer', bg: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' };
+    case 'customer': return { label: '🛒 Customer', bg: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' };
+    default: return { label: role, bg: 'bg-steel-100 text-steel-700 dark:bg-gray-700 dark:text-gray-300' };
+  }
+};
+
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +34,7 @@ const AdminUsers = () => {
   const handleApprove = async (id) => {
     try {
       await adminService.updateUser(id, { isApproved: true });
-      toast.success('Wholesaler approved! ✅');
+      toast.success('Dealer approved! ✅');
       fetchUsers();
     } catch { toast.error('Failed'); }
   };
@@ -53,7 +62,7 @@ const AdminUsers = () => {
         <select className="input-field w-auto" value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
           <option value="">All Roles</option>
           <option value="customer">🛒 Customer</option>
-          <option value="wholesaler">🏪 Wholesaler</option>
+          <option value="wholesaler">🏪 Dealer</option>
           <option value="admin">👑 Admin</option>
         </select>
       </div>
@@ -71,40 +80,41 @@ const AdminUsers = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((u) => (
-              <tr key={u._id} className="border-b border-steel-100 dark:border-gray-700 hover:bg-steel-50 dark:hover:bg-gray-800 transition">
-                <td className="p-3 font-medium dark:text-gray-200">{u.name}</td>
-                <td className="p-3 text-steel-500 dark:text-gray-400">{u.email}</td>
-                <td className="p-3">
-                  <span className={`badge ${u.role === 'admin' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300' : u.role === 'wholesaler' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'}`}>
-                    {u.role === 'admin' ? '👑' : u.role === 'wholesaler' ? '🏪' : '🛒'} {u.role}
-                  </span>
-                </td>
-                <td className="p-3">
-                  <span className={`badge ${u.isActive ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'}`}>
-                    {u.isActive ? '✅ Active' : '❌ Inactive'}
-                  </span>
-                  {u.role === 'wholesaler' && !u.isApproved && (
-                    <span className="badge bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300 ml-1">⏳ Pending</span>
-                  )}
-                </td>
-                <td className="p-3 text-steel-400 dark:text-gray-500">{new Date(u.createdAt).toLocaleDateString()}</td>
-                <td className="p-3 text-center">
-                  <div className="flex justify-center gap-2">
+            {users.map((u) => {
+              const role = roleDisplay(u.role);
+              return (
+                <tr key={u._id} className="border-b border-steel-100 dark:border-gray-700 hover:bg-steel-50 dark:hover:bg-gray-800 transition">
+                  <td className="p-3 font-medium dark:text-gray-200">{u.name}</td>
+                  <td className="p-3 text-steel-500 dark:text-gray-400">{u.email}</td>
+                  <td className="p-3">
+                    <span className={`badge ${role.bg}`}>{role.label}</span>
+                  </td>
+                  <td className="p-3">
+                    <span className={`badge ${u.isActive ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'}`}>
+                      {u.isActive ? '✅ Active' : '❌ Inactive'}
+                    </span>
                     {u.role === 'wholesaler' && !u.isApproved && (
-                      <button onClick={() => handleApprove(u._id)} className="text-green-500 hover:text-green-700 transition" title="Approve">
-                        <FiCheck />
-                      </button>
+                      <span className="badge bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300 ml-1">⏳ Pending</span>
                     )}
-                    <button onClick={() => handleToggleActive(u._id, u.isActive)}
-                      className={`${u.isActive ? 'text-red-500 hover:text-red-700' : 'text-green-500 hover:text-green-700'} transition`}
-                      title={u.isActive ? 'Deactivate' : 'Activate'}>
-                      {u.isActive ? <FiX /> : <FiCheck />}
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="p-3 text-steel-400 dark:text-gray-500">{new Date(u.createdAt).toLocaleDateString()}</td>
+                  <td className="p-3 text-center">
+                    <div className="flex justify-center gap-2">
+                      {u.role === 'wholesaler' && !u.isApproved && (
+                        <button onClick={() => handleApprove(u._id)} className="text-green-500 hover:text-green-700 transition" title="Approve Dealer">
+                          <FiCheck />
+                        </button>
+                      )}
+                      <button onClick={() => handleToggleActive(u._id, u.isActive)}
+                        className={`${u.isActive ? 'text-red-500 hover:text-red-700' : 'text-green-500 hover:text-green-700'} transition`}
+                        title={u.isActive ? 'Deactivate' : 'Activate'}>
+                        {u.isActive ? <FiX /> : <FiCheck />}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

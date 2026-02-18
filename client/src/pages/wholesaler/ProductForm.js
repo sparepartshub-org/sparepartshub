@@ -1,5 +1,5 @@
 /**
- * ProductForm — create/edit product form for wholesalers
+ * ProductForm — create/edit product form for dealers with Indian state/city
  */
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,6 +7,14 @@ import productService from '../../services/product.service';
 import categoryService from '../../services/category.service';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import toast from 'react-hot-toast';
+
+const INDIAN_STATES = [
+  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat',
+  'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh',
+  'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+  'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh',
+  'Uttarakhand', 'West Bengal', 'Delhi', 'Chandigarh', 'Jammu & Kashmir', 'Ladakh', 'Puducherry',
+];
 
 const ProductForm = () => {
   const { id } = useParams();
@@ -18,7 +26,7 @@ const ProductForm = () => {
     name: '', description: '', price: '', comparePrice: '',
     category: '', brand: '', vehicleType: 'bike',
     vehicleMake: '', vehicleModel: '', partNumber: '',
-    stock: '', tags: '',
+    stock: '', tags: '', dealerState: '', dealerCity: '',
   });
   const [images, setImages] = useState(null);
 
@@ -35,6 +43,7 @@ const ProductForm = () => {
             vehicleType: p.vehicleType, vehicleMake: p.vehicleMake || '',
             vehicleModel: p.vehicleModel || '', partNumber: p.partNumber || '',
             stock: p.stock, tags: p.tags?.join(', ') || '',
+            dealerState: p.dealerState || '', dealerCity: p.dealerCity || '',
           });
         })
         .catch(() => toast.error('Product not found'))
@@ -85,7 +94,7 @@ const ProductForm = () => {
       <form onSubmit={handleSubmit} className="card p-6 space-y-4">
         <div>
           <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">🔧 Product Name *</label>
-          <input type="text" className="input-field" required value={form.name} onChange={update('name')} placeholder="e.g. Bosch Brake Pad Set" />
+          <input type="text" className="input-field" required value={form.name} onChange={update('name')} placeholder="e.g. Hero Splendor Brake Shoe Set" />
         </div>
 
         <div>
@@ -99,7 +108,7 @@ const ProductForm = () => {
             <input type="number" className="input-field" required min="0" value={form.price} onChange={update('price')} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">🏷️ Compare/MRP Price</label>
+            <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">🏷️ Compare/MRP Price (₹)</label>
             <input type="number" className="input-field" min="0" value={form.comparePrice} onChange={update('comparePrice')} />
           </div>
         </div>
@@ -117,6 +126,7 @@ const ProductForm = () => {
             <select className="input-field" required value={form.vehicleType} onChange={update('vehicleType')}>
               <option value="bike">🏍️ Bike</option>
               <option value="car">🚗 Car</option>
+              <option value="tractor">🚜 Tractor</option>
             </select>
           </div>
         </div>
@@ -128,11 +138,11 @@ const ProductForm = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">🚘 Vehicle Make</label>
-            <input type="text" className="input-field" value={form.vehicleMake} onChange={update('vehicleMake')} placeholder="e.g. Honda" />
+            <input type="text" className="input-field" value={form.vehicleMake} onChange={update('vehicleMake')} placeholder="e.g. Maruti Suzuki" />
           </div>
           <div>
             <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">📌 Vehicle Model</label>
-            <input type="text" className="input-field" value={form.vehicleModel} onChange={update('vehicleModel')} placeholder="e.g. Civic" />
+            <input type="text" className="input-field" value={form.vehicleModel} onChange={update('vehicleModel')} placeholder="e.g. Alto 800" />
           </div>
         </div>
 
@@ -147,9 +157,24 @@ const ProductForm = () => {
           </div>
         </div>
 
+        {/* Dealer Location */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">📍 Dealer State</label>
+            <select className="input-field" value={form.dealerState} onChange={update('dealerState')}>
+              <option value="">Select State</option>
+              {INDIAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">📍 Dealer City</label>
+            <input type="text" className="input-field" value={form.dealerCity} onChange={update('dealerCity')} placeholder="e.g. Mumbai" />
+          </div>
+        </div>
+
         <div>
           <label className="block text-sm font-medium text-steel-700 dark:text-gray-300 mb-1">🏷️ Tags (comma-separated)</label>
-          <input type="text" className="input-field" value={form.tags} onChange={update('tags')} placeholder="brake, honda, cbr, oem" />
+          <input type="text" className="input-field" value={form.tags} onChange={update('tags')} placeholder="brake, maruti, alto, oem" />
         </div>
 
         <div>

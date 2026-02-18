@@ -4,6 +4,16 @@ import LoadingSpinner from '../../components/common/LoadingSpinner';
 import toast from 'react-hot-toast';
 import { FiEdit2, FiTrash2, FiPlus } from 'react-icons/fi';
 
+const vehicleEmoji = (type) => {
+  switch (type) {
+    case 'bike': return '🏍️';
+    case 'car': return '🚗';
+    case 'tractor': return '🚜';
+    case 'both': return '🔧';
+    default: return '🔧';
+  }
+};
+
 const AdminCategories = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -75,6 +85,7 @@ const AdminCategories = () => {
             <option value="both">🔧 Both</option>
             <option value="bike">🏍️ Bike</option>
             <option value="car">🚗 Car</option>
+            <option value="tractor">🚜 Tractor</option>
           </select>
         </div>
         <button type="submit" className="btn-primary flex items-center gap-1">
@@ -89,8 +100,8 @@ const AdminCategories = () => {
         {categories.map((cat, i) => (
           <div key={cat._id} className="card p-4 flex items-center justify-between hover:shadow-md transition-all duration-300 animate-slideUp" style={{ animationDelay: `${i * 50}ms` }}>
             <div>
-              <h3 className="font-semibold text-steel-800 dark:text-gray-200">⚙️ {cat.name}</h3>
-              <p className="text-xs text-steel-500 dark:text-gray-400">{cat.vehicleType === 'bike' ? '🏍️' : cat.vehicleType === 'car' ? '🚗' : '🔧'} {cat.vehicleType} • {cat.description}</p>
+              <h3 className="font-semibold text-steel-800 dark:text-gray-200">{vehicleEmoji(cat.vehicleType)} {cat.name}</h3>
+              <p className="text-xs text-steel-500 dark:text-gray-400">{vehicleEmoji(cat.vehicleType)} {cat.vehicleType} • {cat.description}</p>
             </div>
             <div className="flex gap-2">
               <button onClick={() => handleEdit(cat)} className="text-blue-500 hover:text-blue-700 transition"><FiEdit2 /></button>

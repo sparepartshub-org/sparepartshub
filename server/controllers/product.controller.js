@@ -22,6 +22,8 @@ exports.getProducts = async (req, res, next) => {
     if (vehicleType) filter.vehicleType = vehicleType;
     if (brand) filter.brand = { $regex: brand, $options: 'i' };
     if (wholesaler) filter.wholesaler = wholesaler;
+    if (req.query.dealerState) filter.dealerState = req.query.dealerState;
+    if (req.query.dealerCity) filter.dealerCity = { $regex: req.query.dealerCity, $options: 'i' };
     if (minPrice || maxPrice) {
       filter.price = {};
       if (minPrice) filter.price.$gte = Number(minPrice);
@@ -32,7 +34,7 @@ exports.getProducts = async (req, res, next) => {
     const [products, total] = await Promise.all([
       Product.find(filter)
         .populate('category', 'name slug')
-        .populate('wholesaler', 'name businessName')
+        .populate('wholesaler', 'name businessName whatsappNumber')
         .sort(sort)
         .skip(skip)
         .limit(Number(limit)),
@@ -55,7 +57,7 @@ exports.getProduct = async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id)
       .populate('category', 'name slug')
-      .populate('wholesaler', 'name businessName email phone');
+      .populate('wholesaler', 'name businessName email phone whatsappNumber');
     if (!product) return res.status(404).json({ message: 'Product not found.' });
     res.json({ product });
   } catch (err) {

@@ -17,14 +17,16 @@ const createOrderSchema = Joi.object({
     street: Joi.string().required(),
     city: Joi.string().required(),
     state: Joi.string().required(),
-    zipCode: Joi.string().required(),
+    pinCode: Joi.string().pattern(/^[0-9]{6}$/).required().messages({
+      'string.pattern.base': 'PIN Code must be exactly 6 digits',
+    }),
     country: Joi.string().default('India'),
   }).required(),
-  paymentMethod: Joi.string().valid('cod', 'online').default('cod'),
+  paymentMethod: Joi.string().valid('cod').default('cod'), // COD only
 });
 
 const updateOrderStatusSchema = Joi.object({
-  status: Joi.string().valid('confirmed', 'shipped', 'delivered', 'cancelled').required(),
+  status: Joi.string().valid('confirmed', 'packed', 'shipped', 'out_for_delivery', 'delivered', 'cancelled').required(),
   note: Joi.string().max(500).allow(''),
   trackingNumber: Joi.string().max(100).allow(''),
 });

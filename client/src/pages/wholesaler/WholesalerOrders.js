@@ -20,7 +20,7 @@ const WholesalerOrders = () => {
   const handleStatusUpdate = async (orderId, status) => {
     try {
       await orderService.updateStatus(orderId, { status });
-      toast.success(`Order ${status} ✅`);
+      toast.success(`Order ${status.replace('_', ' ')} ✅`);
       fetchOrders();
     } catch { toast.error('Failed to update status'); }
   };
@@ -44,23 +44,30 @@ const WholesalerOrders = () => {
                 </div>
                 <div className="flex items-center gap-3">
                   <StatusBadge status={order.status} />
-                  <span className="font-bold text-primary-500">₹{order.totalAmount.toLocaleString()}</span>
+                  <span className="font-bold text-primary-500">₹{order.totalAmount.toLocaleString('en-IN')}</span>
                 </div>
               </div>
-              <p className="text-sm text-steel-500 dark:text-gray-400 mb-3">👤 Customer: {order.customer?.name} ({order.customer?.email})</p>
+              <p className="text-sm text-steel-500 dark:text-gray-400 mb-1">👤 Customer: {order.customer?.name} ({order.customer?.email})</p>
+              <p className="text-sm text-steel-500 dark:text-gray-400 mb-3">💵 Payment: Cash on Delivery</p>
               <div className="text-sm text-steel-600 dark:text-gray-400 mb-3">
                 🔧 {order.items.map((item, i) => (
                   <span key={i}>{item.name} ×{item.quantity}{i < order.items.length - 1 ? ', ' : ''}</span>
                 ))}
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {order.status === 'placed' && (
                   <button onClick={() => handleStatusUpdate(order._id, 'confirmed')} className="btn-primary text-sm py-1.5 px-4">✅ Confirm</button>
                 )}
                 {order.status === 'confirmed' && (
+                  <button onClick={() => handleStatusUpdate(order._id, 'packed')} className="btn-primary text-sm py-1.5 px-4">📦 Mark Packed</button>
+                )}
+                {order.status === 'packed' && (
                   <button onClick={() => handleStatusUpdate(order._id, 'shipped')} className="btn-primary text-sm py-1.5 px-4">🚚 Mark Shipped</button>
                 )}
                 {order.status === 'shipped' && (
+                  <button onClick={() => handleStatusUpdate(order._id, 'out_for_delivery')} className="btn-primary text-sm py-1.5 px-4">🏃 Out for Delivery</button>
+                )}
+                {order.status === 'out_for_delivery' && (
                   <button onClick={() => handleStatusUpdate(order._id, 'delivered')} className="btn-primary text-sm py-1.5 px-4">🏠 Mark Delivered</button>
                 )}
                 {['placed', 'confirmed'].includes(order.status) && (

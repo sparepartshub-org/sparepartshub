@@ -13,9 +13,9 @@ const productSchema = new mongoose.Schema(
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
     wholesaler: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     brand: { type: String, required: true, trim: true },
-    vehicleType: { type: String, enum: ['bike', 'car'], required: true },
-    vehicleMake: { type: String, trim: true }, // e.g., Honda, Toyota
-    vehicleModel: { type: String, trim: true }, // e.g., Civic, CBR
+    vehicleType: { type: String, enum: ['bike', 'car', 'tractor'], required: true },
+    vehicleMake: { type: String, trim: true }, // e.g., Honda, Toyota, Mahindra
+    vehicleModel: { type: String, trim: true }, // e.g., Civic, CBR, Arjun
     partNumber: { type: String, trim: true },
     images: [{ type: String }],
     stock: { type: Number, required: true, default: 0, min: 0 },
@@ -23,6 +23,9 @@ const productSchema = new mongoose.Schema(
     rating: { type: Number, default: 0, min: 0, max: 5 },
     numReviews: { type: Number, default: 0 },
     tags: [{ type: String }],
+    // Dealer location for state/city filtering
+    dealerState: { type: String, trim: true },
+    dealerCity: { type: String, trim: true },
   },
   { timestamps: true }
 );
@@ -32,5 +35,7 @@ productSchema.index({ name: 'text', description: 'text', brand: 'text', tags: 't
 productSchema.index({ slug: 1 });
 productSchema.index({ wholesaler: 1 });
 productSchema.index({ category: 1 });
+productSchema.index({ dealerState: 1 });
+productSchema.index({ dealerCity: 1 });
 
 module.exports = mongoose.model('Product', productSchema);

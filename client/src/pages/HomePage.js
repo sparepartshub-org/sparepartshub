@@ -6,7 +6,7 @@ import ProductCard from '../components/common/ProductCard';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { FiTruck, FiShield, FiHeadphones, FiTag, FiStar } from 'react-icons/fi';
 
-const categoryEmojis = ['🔧', '🛞', '🔋', '💡', '🛢️', '🔩', '⚙️', '🏎️'];
+const categoryEmojis = ['🔧', '🛞', '🔋', '💡', '🛢️', '🔩', '⚙️', '🏎️', '🚜', '⛽', '🔄', '🛞'];
 
 const HomePage = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -52,8 +52,8 @@ const HomePage = () => {
               <span className="text-accent-300">Delivered Fast 🚚</span>
             </h1>
             <p className="text-lg sm:text-xl text-blue-100 dark:text-gray-300 mb-8 leading-relaxed">
-              🔧 Find genuine OEM & aftermarket parts for your bike and car.
-              Trusted wholesalers, competitive prices, and nationwide delivery.
+              🔧 Find genuine OEM & aftermarket parts for your bike, car, and tractor.
+              Trusted dealers, competitive prices, and nationwide delivery.
               From brake pads to engine components — we've got you covered! ⚙️
             </p>
             <div className="flex flex-wrap gap-4">
@@ -63,10 +63,13 @@ const HomePage = () => {
               <Link to="/products?vehicleType=car" className="bg-white text-primary-500 font-semibold py-3 px-8 rounded-lg hover:bg-blue-50 transition-all text-lg hover:scale-105">
                 🚗 Shop Car Parts
               </Link>
+              <Link to="/products?vehicleType=tractor" className="bg-green-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-green-600 transition-all text-lg hover:scale-105">
+                🚜 Shop Tractor Parts
+              </Link>
             </div>
             <div className="flex gap-8 mt-8 text-sm text-blue-200 dark:text-gray-400">
               <span>✅ 10,000+ Parts</span>
-              <span>✅ 500+ Wholesalers</span>
+              <span>✅ 500+ Dealers</span>
               <span>✅ Free Shipping*</span>
             </div>
           </div>
@@ -79,7 +82,7 @@ const HomePage = () => {
           {[
             { icon: '🚚', title: 'Fast Delivery', desc: 'Nationwide shipping in 3-5 days', color: 'from-blue-500 to-blue-600' },
             { icon: '✅', title: 'Genuine Parts', desc: 'OEM & verified aftermarket parts', color: 'from-green-500 to-green-600' },
-            { icon: '💰', title: 'Wholesale Prices', desc: 'Direct from wholesalers, save 30%+', color: 'from-amber-500 to-amber-600' },
+            { icon: '💰', title: 'Dealer Prices', desc: 'Direct from dealers, save 30%+', color: 'from-amber-500 to-amber-600' },
             { icon: '🤖', title: '24/7 AI Support', desc: 'Smart chatbot always ready to help', color: 'from-purple-500 to-purple-600' },
           ].map((f, i) => (
             <div key={i} className="card p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-slideUp" style={{ animationDelay: `${i * 100}ms` }}>
@@ -87,6 +90,35 @@ const HomePage = () => {
               <h3 className="font-bold text-steel-800 dark:text-gray-200">{f.title}</h3>
               <p className="text-sm text-steel-500 dark:text-gray-400 mt-1">{f.desc}</p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Vehicle Type Showcase — Cars, Bikes, Tractors */}
+      <section className="max-w-7xl mx-auto px-4 py-12">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-steel-800 dark:text-gray-200">🚘 Shop by Vehicle Type</h2>
+          <p className="text-steel-500 dark:text-gray-400 mt-2">Find parts for your car, bike, or tractor</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { type: 'car', emoji: '🚗', title: 'Cars', desc: 'Brake pads, filters, headlights, shock absorbers and more for all car brands', color: 'from-blue-500 to-blue-600', darkColor: 'dark:from-blue-900 dark:to-blue-800' },
+            { type: 'bike', emoji: '🏍️', title: 'Bikes', desc: 'Chain sprockets, clutch plates, spark plugs and more for all bike models', color: 'from-purple-500 to-purple-600', darkColor: 'dark:from-purple-900 dark:to-purple-800' },
+            { type: 'tractor', emoji: '🚜', title: 'Tractors', desc: 'Hydraulic pumps, PTO shafts, steering parts, tyres for all tractor brands', color: 'from-green-500 to-green-600', darkColor: 'dark:from-green-900 dark:to-green-800' },
+          ].map((v, i) => (
+            <Link
+              key={v.type}
+              to={`/products?vehicleType=${v.type}`}
+              className={`card p-8 text-center bg-gradient-to-br ${v.color} ${v.darkColor} text-white hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-slideUp`}
+              style={{ animationDelay: `${i * 100}ms` }}
+            >
+              <div className="text-6xl mb-4">{v.emoji}</div>
+              <h3 className="text-2xl font-bold mb-2">{v.title}</h3>
+              <p className="text-sm opacity-90">{v.desc}</p>
+              <div className="mt-4 inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white/30 transition">
+                Browse {v.title} Parts →
+              </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -109,6 +141,9 @@ const HomePage = () => {
               </div>
               <h3 className="font-bold text-steel-800 dark:text-gray-200 group-hover:text-primary-500 transition-colors">{cat.name}</h3>
               <p className="text-xs text-steel-400 dark:text-gray-500 mt-1">{cat.description || 'Browse parts'}</p>
+              <span className="text-xs text-steel-300 dark:text-gray-600 mt-1 block">
+                {cat.vehicleType === 'bike' ? '🏍️' : cat.vehicleType === 'car' ? '🚗' : cat.vehicleType === 'tractor' ? '🚜' : '🔧'} {cat.vehicleType}
+              </span>
             </Link>
           ))}
         </div>
@@ -119,7 +154,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold text-steel-800 dark:text-gray-200">🏆 Why Choose SparePartsHub?</h2>
-            <p className="text-steel-500 dark:text-gray-400 mt-2">Thousands of mechanics and car enthusiasts trust us</p>
+            <p className="text-steel-500 dark:text-gray-400 mt-2">Thousands of mechanics and vehicle enthusiasts trust us</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -130,8 +165,8 @@ const HomePage = () => {
               },
               {
                 emoji: '🤝',
-                title: 'Verified Wholesalers',
-                desc: 'Every wholesaler is verified and approved. Buy with confidence knowing you\'re getting genuine, quality parts.',
+                title: 'Verified Dealers',
+                desc: 'Every dealer is verified and approved. Buy with confidence knowing you\'re getting genuine, quality parts.',
               },
               {
                 emoji: '🛡️',
@@ -154,7 +189,7 @@ const HomePage = () => {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-3xl font-bold text-steel-800 dark:text-gray-200">🆕 Latest Products</h2>
-            <p className="text-steel-500 dark:text-gray-400 mt-1">Fresh arrivals from our top wholesalers</p>
+            <p className="text-steel-500 dark:text-gray-400 mt-1">Fresh arrivals from our top dealers</p>
           </div>
           <Link to="/products" className="btn-primary flex items-center gap-2">
             View All ⚙️
@@ -181,7 +216,7 @@ const HomePage = () => {
               {
                 name: 'Rajesh Kumar',
                 role: 'Mechanic, Delhi',
-                text: 'SparePartsHub saved my workshop! I find genuine Honda and Bajaj parts at wholesale prices. Delivery is always on time. 🏍️',
+                text: 'SparePartsHub saved my workshop! I find genuine Honda and Bajaj parts at dealer prices. Delivery is always on time. 🏍️',
                 rating: 5,
               },
               {
@@ -191,9 +226,9 @@ const HomePage = () => {
                 rating: 5,
               },
               {
-                name: 'Amit Wholesaler',
-                role: 'Auto Parts Dealer, Pune',
-                text: 'As a wholesaler, this platform has expanded my reach across India. The dashboard is intuitive and orders keep flowing! 📦',
+                name: 'Ramesh Singh',
+                role: 'Farmer, Punjab',
+                text: 'Getting tractor parts was always a hassle. Now I order Mahindra hydraulic parts online and they arrive at my doorstep! 🚜',
                 rating: 5,
               },
             ].map((t, i) => (
@@ -220,7 +255,7 @@ const HomePage = () => {
           <h2 className="text-3xl font-bold text-steel-800 dark:text-gray-200 mb-4">🔧 Ready to Find Your Parts?</h2>
           <p className="text-steel-600 dark:text-gray-400 mb-6 max-w-xl mx-auto">
             Join SparePartsHub today and get access to thousands of genuine spare parts
-            at wholesale prices. Whether you're a mechanic, car owner, or bike enthusiast — we've got you! 🏁
+            at dealer prices. Whether you're a mechanic, car owner, bike enthusiast, or farmer — we've got you! 🏁
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/products" className="btn-primary text-lg px-8 py-3">

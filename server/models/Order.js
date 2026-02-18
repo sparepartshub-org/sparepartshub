@@ -18,6 +18,12 @@ const statusHistorySchema = new mongoose.Schema({
   note: { type: String, default: '' },
 });
 
+const trackingStepSchema = new mongoose.Schema({
+  status: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now },
+  description: { type: String, default: '' },
+});
+
 const orderSchema = new mongoose.Schema(
   {
     orderNumber: { type: String, required: true, unique: true },
@@ -27,20 +33,21 @@ const orderSchema = new mongoose.Schema(
       street: { type: String, required: true },
       city: { type: String, required: true },
       state: { type: String, required: true },
-      zipCode: { type: String, required: true },
+      pinCode: { type: String, required: true },
       country: { type: String, default: 'India' },
     },
-    paymentMethod: { type: String, enum: ['cod', 'online'], default: 'cod' },
+    paymentMethod: { type: String, default: 'cod' }, // COD only
     itemsTotal: { type: Number, required: true },
     shippingCost: { type: Number, default: 0 },
     tax: { type: Number, default: 0 },
     totalAmount: { type: Number, required: true },
     status: {
       type: String,
-      enum: ['placed', 'confirmed', 'shipped', 'delivered', 'cancelled'],
+      enum: ['placed', 'confirmed', 'packed', 'shipped', 'out_for_delivery', 'delivered', 'cancelled'],
       default: 'placed',
     },
     statusHistory: [statusHistorySchema],
+    tracking: [trackingStepSchema], // Detailed tracking steps
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
     deliveredAt: { type: Date },

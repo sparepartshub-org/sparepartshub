@@ -23,7 +23,7 @@ const AdminOrders = () => {
   const handleStatusUpdate = async (orderId, status) => {
     try {
       await orderService.updateStatus(orderId, { status });
-      toast.success(`Order ${status} ✅`);
+      toast.success(`Order ${status.replace('_', ' ')} ✅`);
       fetchOrders();
     } catch { toast.error('Failed'); }
   };
@@ -39,7 +39,9 @@ const AdminOrders = () => {
           <option value="">🔄 All Statuses</option>
           <option value="placed">📦 Placed</option>
           <option value="confirmed">✅ Confirmed</option>
+          <option value="packed">📦 Packed</option>
           <option value="shipped">🚚 Shipped</option>
+          <option value="out_for_delivery">🏃 Out for Delivery</option>
           <option value="delivered">🏠 Delivered</option>
           <option value="cancelled">❌ Cancelled</option>
         </select>
@@ -65,7 +67,7 @@ const AdminOrders = () => {
                 <td className="p-3 dark:text-gray-300">{order.customer?.name}</td>
                 <td className="p-3 text-steel-500 dark:text-gray-400">{order.items.length}</td>
                 <td className="p-3"><StatusBadge status={order.status} /></td>
-                <td className="p-3 text-right font-semibold dark:text-gray-200">₹{order.totalAmount.toLocaleString()}</td>
+                <td className="p-3 text-right font-semibold dark:text-gray-200">₹{order.totalAmount.toLocaleString('en-IN')}</td>
                 <td className="p-3 text-right text-steel-400 dark:text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</td>
                 <td className="p-3 text-center">
                   <select
@@ -75,8 +77,10 @@ const AdminOrders = () => {
                   >
                     <option value="">Update...</option>
                     {order.status === 'placed' && <option value="confirmed">✅ Confirm</option>}
-                    {order.status === 'confirmed' && <option value="shipped">🚚 Ship</option>}
-                    {order.status === 'shipped' && <option value="delivered">🏠 Deliver</option>}
+                    {order.status === 'confirmed' && <option value="packed">📦 Pack</option>}
+                    {order.status === 'packed' && <option value="shipped">🚚 Ship</option>}
+                    {order.status === 'shipped' && <option value="out_for_delivery">🏃 Out for Delivery</option>}
+                    {order.status === 'out_for_delivery' && <option value="delivered">🏠 Deliver</option>}
                     {['placed', 'confirmed'].includes(order.status) && <option value="cancelled">❌ Cancel</option>}
                   </select>
                 </td>

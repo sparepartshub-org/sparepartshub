@@ -19,7 +19,7 @@ const LoginPage = () => {
       const routes = { admin: '/admin', wholesaler: '/wholesaler', customer: '/products' };
       navigate(routes[data.user.role] || '/');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed');
+      toast.error(err.response?.data?.message || err.response?.data?.errors?.[0] || 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -71,7 +71,7 @@ const LoginPage = () => {
         <div className="mt-6 p-3 bg-steel-50 dark:bg-gray-700 rounded-lg text-xs text-steel-500 dark:text-gray-400">
           <p className="font-semibold mb-1">🧪 Demo Accounts:</p>
           <p>👑 Admin: admin@sparepartshub.com / admin123</p>
-          <p>🏪 Wholesaler: wholesaler@sparepartshub.com / wholesaler123</p>
+          <p>🏪 Dealer: wholesaler@sparepartshub.com / wholesaler123</p>
           <p>🛒 Customer: customer@sparepartshub.com / customer123</p>
         </div>
       </div>

@@ -63,7 +63,7 @@ exports.login = async (req, res, next) => {
 
     // Wholesaler approval check
     if (user.role === 'wholesaler' && !user.isApproved) {
-      return res.status(403).json({ message: 'Your wholesaler account is pending approval.' });
+      return res.status(403).json({ message: 'Your dealer account is pending approval.' });
     }
 
     const tokens = generateTokens(user._id, user.role);
@@ -121,7 +121,7 @@ exports.getProfile = async (req, res) => {
 /** PUT /api/auth/me */
 exports.updateProfile = async (req, res, next) => {
   try {
-    const allowedFields = ['name', 'phone', 'address', 'businessName'];
+    const allowedFields = ['name', 'phone', 'address', 'businessName', 'whatsappNumber'];
     const updates = {};
     allowedFields.forEach(f => { if (req.body[f] !== undefined) updates[f] = req.body[f]; });
 

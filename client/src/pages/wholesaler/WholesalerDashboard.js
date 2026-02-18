@@ -29,7 +29,7 @@ const WholesalerDashboard = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 animate-fadeIn">
-      <h1 className="text-3xl font-bold text-steel-800 dark:text-gray-200 mb-6">🏪 Wholesaler Dashboard</h1>
+      <h1 className="text-3xl font-bold text-steel-800 dark:text-gray-200 mb-6">🏪 Dealer Dashboard</h1>
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
@@ -84,8 +84,8 @@ const WholesalerDashboard = () => {
                   <tr key={order._id} className="border-b border-steel-100 dark:border-gray-700 hover:bg-steel-50 dark:hover:bg-gray-800 transition">
                     <td className="py-3 font-medium dark:text-gray-200">{order.orderNumber}</td>
                     <td className="py-3 dark:text-gray-300">{order.customer?.name}</td>
-                    <td className="py-3"><span className={`badge ${order.status === 'delivered' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'}`}>{order.status}</span></td>
-                    <td className="py-3 text-right font-semibold dark:text-gray-200">₹{order.totalAmount.toLocaleString()}</td>
+                    <td className="py-3"><span className={`badge ${order.status === 'delivered' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'}`}>{order.status.replace('_', ' ')}</span></td>
+                    <td className="py-3 text-right font-semibold dark:text-gray-200">₹{order.totalAmount.toLocaleString('en-IN')}</td>
                     <td className="py-3 text-right text-steel-400 dark:text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</td>
                   </tr>
                 ))}

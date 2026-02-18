@@ -55,14 +55,15 @@ exports.createOrder = async (req, res, next) => {
       customer: req.user._id,
       items: orderItems,
       shippingAddress: value.shippingAddress,
-      paymentMethod: value.paymentMethod,
+      paymentMethod: 'cod', // Always COD
       itemsTotal,
       shippingCost,
       tax,
       totalAmount,
       status: 'placed',
       statusHistory: [{ status: 'placed', note: 'Order placed by customer' }],
-      estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // +7 days
+      tracking: [{ status: 'placed', description: 'Order has been placed successfully', timestamp: new Date() }],
+      estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // +5 days (India delivery)
     });
 
     res.status(201).json({ message: 'Order placed successfully!', order });
@@ -95,7 +96,7 @@ exports.getOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id)
       .populate('customer', 'name email phone')
-      .populate('items.wholesaler', 'name businessName');
+      .populate('items.wholesaler', 'name businessName whatsappNumber phone');
 
     if (!order) return res.status(404).json({ message: 'Order not found.' });
 
@@ -114,6 +115,27 @@ exports.getOrder = async (req, res, next) => {
   }
 };
 
+/** GET /api/orders/:id/tracking — get tracking info for an order */
+exports.getOrderTracking = async (req, res, next) => {
+  try {
+    const order = await Order.findById(req.params.id)
+      .select('orderNumber status tracking estimatedDelivery statusHistory trackingNumber')
+      .populate('items.wholesaler', 'name businessName');
+
+    if (!order) return res.status(404).json({ message: 'Order not found.' });
+
+    res.json({
+      orderNumber: order.orderNumber,
+      status: order.status,
+      tracking: order.tracking,
+      estimatedDelivery: order.estimatedDelivery,
+      trackingNumber: order.trackingNumber,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 /** PUT /api/orders/:id/status — admin/wholesaler updates status */
 exports.updateOrderStatus = async (req, res, next) => {
   try {
@@ -123,8 +145,23 @@ exports.updateOrderStatus = async (req, res, next) => {
     const order = await Order.findById(req.params.id);
     if (!order) return res.status(404).json({ message: 'Order not found.' });
 
+    // Tracking step descriptions
+    const trackingDescriptions = {
+      confirmed: 'Order has been confirmed by the dealer',
+      packed: 'Order has been packed and is ready for shipping',
+      shipped: 'Order has been shipped and is on the way',
+      out_for_delivery: 'Order is out for delivery to your address',
+      delivered: 'Order has been delivered successfully',
+      cancelled: 'Order has been cancelled',
+    };
+
     order.status = value.status;
     order.statusHistory.push({ status: value.status, note: value.note || '' });
+    order.tracking.push({
+      status: value.status,
+      description: trackingDescriptions[value.status] || value.note || '',
+      timestamp: new Date(),
+    });
 
     if (value.trackingNumber) order.trackingNumber = value.trackingNumber;
     if (value.status === 'delivered') {
