@@ -36,7 +36,10 @@ const orderSchema = new mongoose.Schema(
       pinCode: { type: String, required: true },
       country: { type: String, default: 'India' },
     },
-    paymentMethod: { type: String, default: 'cod' }, // COD only
+    paymentMethod: { type: String, enum: ['cod', 'card', 'upi', 'online'], default: 'cod' },
+    razorpayOrderId: { type: String },
+    razorpayPaymentId: { type: String },
+    razorpaySignature: { type: String },
     itemsTotal: { type: Number, required: true },
     shippingCost: { type: Number, default: 0 },
     tax: { type: Number, default: 0 },

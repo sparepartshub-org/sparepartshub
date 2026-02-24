@@ -178,8 +178,15 @@ const OrderDetailPage = () => {
             <h3 className="font-bold text-steel-800 dark:text-gray-200 mb-3">ℹ️ Order Info</h3>
             <div className="text-sm text-steel-600 dark:text-gray-400 space-y-1">
               <p className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 text-xs font-medium px-2 py-1 rounded">
-                  💵 Cash on Delivery
+                <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded ${
+                  order.isPaid
+                    ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300'
+                    : 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300'
+                }`}>
+                  {order.paymentMethod === 'cod' && '💵 Cash on Delivery'}
+                  {order.paymentMethod === 'card' && `💳 Card Payment${order.isPaid ? ' — Paid ✅' : ' — Pending'}`}
+                  {order.paymentMethod === 'upi' && `📱 UPI Payment${order.isPaid ? ' — Paid ✅' : ' — Pending'}`}
+                  {order.paymentMethod === 'online' && `🌐 Online Payment${order.isPaid ? ' — Paid ✅' : ' — Pending'}`}
                 </span>
               </p>
               <p>📅 Placed: {new Date(order.createdAt).toLocaleString('en-IN')}</p>

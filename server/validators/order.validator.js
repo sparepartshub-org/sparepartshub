@@ -22,7 +22,7 @@ const createOrderSchema = Joi.object({
     }),
     country: Joi.string().default('India'),
   }).required(),
-  paymentMethod: Joi.string().valid('cod').default('cod'), // COD only
+  paymentMethod: Joi.string().valid('cod', 'card', 'upi', 'online').default('cod'),
 });
 
 const updateOrderStatusSchema = Joi.object({

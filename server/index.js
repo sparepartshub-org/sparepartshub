@@ -55,6 +55,7 @@ app.use('/api/categories', require('./routes/category.routes'));
 app.use('/api/complaints', require('./routes/complaint.routes'));
 app.use('/api/admin', require('./routes/admin.routes'));
 app.use('/api/chat', require('./routes/chat.routes'));
+app.use('/api/payments', require('./routes/payment.routes'));
 
 // Root route
 app.get('/', (req, res) => res.json({

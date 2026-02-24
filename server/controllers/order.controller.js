@@ -55,7 +55,7 @@ exports.createOrder = async (req, res, next) => {
       customer: req.user._id,
       items: orderItems,
       shippingAddress: value.shippingAddress,
-      paymentMethod: 'cod', // Always COD
+      paymentMethod: value.paymentMethod || 'cod',
       itemsTotal,
       shippingCost,
       tax,
