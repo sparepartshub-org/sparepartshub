@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { GiAutoRepair } from 'react-icons/gi';
 import toast from 'react-hot-toast';
+
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const INDIAN_STATES = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat',
@@ -13,7 +15,7 @@ const INDIAN_STATES = [
 ];
 
 const RegisterPage = () => {
-  const { register } = useAuth();
+  const { register, googleLogin } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: '', email: '', password: '', role: 'customer',
@@ -21,6 +23,50 @@ const RegisterPage = () => {
     address: { street: '', city: '', state: '', pinCode: '', country: 'India' },
   });
   const [loading, setLoading] = useState(false);
+
+  const handleGoogleResponse = useCallback(async (response) => {
+    if (!response.credential) return;
+    setLoading(true);
+    try {
+      const data = await googleLogin(response.credential);
+      toast.success('Account created with Google! 🎉');
+      const routes = { admin: '/admin', wholesaler: '/wholesaler', customer: '/products' };
+      navigate(routes[data.user.role] || '/products');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Google sign-up failed');
+    } finally {
+      setLoading(false);
+    }
+  }, [googleLogin, navigate]);
+
+  useEffect(() => {
+    if (!GOOGLE_CLIENT_ID) return;
+    const loadGoogleScript = () => {
+      if (document.getElementById('google-gsi-script')) return;
+      const script = document.createElement('script');
+      script.id = 'google-gsi-script';
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        if (window.google?.accounts?.id) {
+          window.google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogleResponse });
+          window.google.accounts.id.renderButton(document.getElementById('google-signup-btn'), {
+            theme: 'outline', size: 'large', width: '100%', text: 'signup_with', shape: 'rectangular', logo_alignment: 'center',
+          });
+        }
+      };
+      document.body.appendChild(script);
+    };
+    if (window.google?.accounts?.id) {
+      window.google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogleResponse });
+      window.google.accounts.id.renderButton(document.getElementById('google-signup-btn'), {
+        theme: 'outline', size: 'large', width: '100%', text: 'signup_with', shape: 'rectangular', logo_alignment: 'center',
+      });
+    } else {
+      loadGoogleScript();
+    }
+  }, [handleGoogleResponse]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,6 +104,21 @@ const RegisterPage = () => {
           <h1 className="text-2xl font-bold text-steel-800 dark:text-gray-200">📝 Create Account</h1>
           <p className="text-steel-500 dark:text-gray-400 text-sm">Join SparePartsHub today — it's free! 🔧</p>
         </div>
+
+        {/* Google Sign-Up Button */}
+        {GOOGLE_CLIENT_ID && (
+          <>
+            <div id="google-signup-btn" className="flex justify-center mb-4"></div>
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-steel-200 dark:border-gray-600"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-3 bg-white dark:bg-gray-800 text-steel-400 dark:text-gray-500">or register with email</span>
+              </div>
+            </div>
+          </>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Role Selection */}

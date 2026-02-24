@@ -3,7 +3,10 @@
  */
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { OAuth2Client } = require('google-auth-library');
 const { registerSchema, loginSchema, refreshTokenSchema } = require('../validators/auth.validator');
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Generate JWT tokens
 const generateTokens = (userId, role) => {
@@ -116,6 +119,63 @@ exports.logout = async (req, res, next) => {
 /** GET /api/auth/me */
 exports.getProfile = async (req, res) => {
   res.json({ user: req.user });
+};
+
+/** POST /api/auth/google — Login/Register with Google */
+exports.googleLogin = async (req, res, next) => {
+  try {
+    const { credential } = req.body;
+    if (!credential) return res.status(400).json({ message: 'Google credential is required.' });
+
+    // Verify Google token
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name, picture } = payload;
+
+    if (!email) return res.status(400).json({ message: 'Google account must have an email.' });
+
+    // Check if user exists with this Google ID or email
+    let user = await User.findOne({ $or: [{ googleId }, { email }] });
+
+    if (user) {
+      // Link Google ID if not already linked
+      if (!user.googleId) {
+        user.googleId = googleId;
+        user.authProvider = user.authProvider === 'local' ? 'local' : 'google';
+      }
+      if (picture && !user.avatar) user.avatar = picture;
+    } else {
+      // Create new user
+      user = await User.create({
+        name,
+        email,
+        googleId,
+        authProvider: 'google',
+        role: 'customer',
+        avatar: picture || '',
+        isActive: true,
+      });
+    }
+
+    if (!user.isActive) return res.status(403).json({ message: 'Account has been deactivated.' });
+    if (user.role === 'wholesaler' && !user.isApproved) {
+      return res.status(403).json({ message: 'Your dealer account is pending approval.' });
+    }
+
+    const tokens = generateTokens(user._id, user.role);
+    user.refreshToken = tokens.refreshToken;
+    await user.save();
+
+    res.json({ message: 'Login successful!', user, ...tokens });
+  } catch (err) {
+    if (err.message?.includes('Token used too late') || err.message?.includes('Invalid token')) {
+      return res.status(401).json({ message: 'Invalid or expired Google token.' });
+    }
+    next(err);
+  }
 };
 
 /** PUT /api/auth/me */

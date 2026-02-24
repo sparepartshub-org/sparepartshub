@@ -1,14 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { GiAutoRepair } from 'react-icons/gi';
 import toast from 'react-hot-toast';
 
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, googleLogin } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
+
+  const handleGoogleResponse = useCallback(async (response) => {
+    if (!response.credential) return;
+    setLoading(true);
+    try {
+      const data = await googleLogin(response.credential);
+      toast.success('Welcome! 🔧');
+      const routes = { admin: '/admin', wholesaler: '/wholesaler', customer: '/products' };
+      navigate(routes[data.user.role] || '/');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Google login failed');
+    } finally {
+      setLoading(false);
+    }
+  }, [googleLogin, navigate]);
+
+  useEffect(() => {
+    if (!GOOGLE_CLIENT_ID) return;
+
+    const loadGoogleScript = () => {
+      if (document.getElementById('google-gsi-script')) return;
+      const script = document.createElement('script');
+      script.id = 'google-gsi-script';
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        if (window.google?.accounts?.id) {
+          window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleResponse,
+          });
+          window.google.accounts.id.renderButton(
+            document.getElementById('google-signin-btn'),
+            {
+              theme: 'outline',
+              size: 'large',
+              width: '100%',
+              text: 'signin_with',
+              shape: 'rectangular',
+              logo_alignment: 'center',
+            }
+          );
+        }
+      };
+      document.body.appendChild(script);
+    };
+
+    if (window.google?.accounts?.id) {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleResponse,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById('google-signin-btn'),
+        {
+          theme: 'outline',
+          size: 'large',
+          width: '100%',
+          text: 'signin_with',
+          shape: 'rectangular',
+          logo_alignment: 'center',
+        }
+      );
+    } else {
+      loadGoogleScript();
+    }
+  }, [handleGoogleResponse]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +103,21 @@ const LoginPage = () => {
           <h1 className="text-2xl font-bold text-steel-800 dark:text-gray-200">🔑 Welcome Back</h1>
           <p className="text-steel-500 dark:text-gray-400 text-sm">Sign in to your SparePartsHub account</p>
         </div>
+
+        {/* Google Sign-In Button */}
+        {GOOGLE_CLIENT_ID && (
+          <>
+            <div id="google-signin-btn" className="flex justify-center mb-4"></div>
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-steel-200 dark:border-gray-600"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-3 bg-white dark:bg-gray-800 text-steel-400 dark:text-gray-500">or sign in with email</span>
+              </div>
+            </div>
+          </>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
