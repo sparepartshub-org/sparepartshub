@@ -20,8 +20,8 @@ const HomePage = () => {
           productService.getProducts({ limit: 8, sort: '-createdAt' }),
           categoryService.getCategories(),
         ]);
-        setFeaturedProducts(prodRes.data.products);
-        setCategories(catRes.data.categories);
+        setFeaturedProducts(prodRes.data?.products || []);
+        setCategories(catRes.data?.categories || []);
       } catch (err) {
         console.error(err);
       } finally {
