@@ -2,6 +2,8 @@
 
 A scalable, full-stack multi-vendor e-commerce platform built with the MERN stack. Customers can browse and purchase bike 🏍️ and car 🚗 spare parts from multiple registered wholesalers — similar to Blinkit but tailored for the automotive spare parts industry.
 
+URL : https://sparepartshub-sable.vercel.app
+
 > **University Final-Year Project**
 
 ---
@@ -327,5 +329,3 @@ Create a `.env` file in the `server/` directory:
 This project is developed as a university final-year project.
 
 ---
-
-**Built with ❤️ using the MERN Stack** 🔧⚙️🏍️🚗
