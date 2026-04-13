@@ -59,6 +59,7 @@
 /* Smooth theme transition */
 html {
   @apply transition-colors duration-300;
+  color-scheme: light;
 }
 
 html.dark {

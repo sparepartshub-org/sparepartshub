@@ -36,7 +36,7 @@ const HomePage = () => {
   return (
     <div className="dark:bg-gray-900 transition-colors duration-300">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-500 via-primary-600 to-primary-800 dark:from-gray-800 dark:via-gray-900 dark:to-black text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary-50 via-primary-100 to-primary-200 dark:from-gray-800 dark:via-gray-900 dark:to-black text-primary-900 dark:text-white overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 text-9xl">⚙️</div>
           <div className="absolute bottom-10 right-10 text-9xl">🔧</div>
@@ -49,9 +49,9 @@ const HomePage = () => {
             </div>
             <h1 className="text-4xl sm:text-6xl font-bold mb-6 leading-tight">
               Premium Spare Parts<br />
-              <span className="text-accent-300">Delivered Fast 🚚</span>
+              <span className="text-primary-600 dark:text-accent-300">Delivered Fast 🚚</span>
             </h1>
-            <p className="text-lg sm:text-xl text-blue-100 dark:text-gray-300 mb-8 leading-relaxed">
+            <p className="text-lg sm:text-xl text-primary-700 dark:text-gray-300 mb-8 leading-relaxed">
               🔧 Find genuine OEM & aftermarket parts for your bike, car, and tractor.
               Trusted dealers, competitive prices, and nationwide delivery.
               From brake pads to engine components — we've got you covered! ⚙️
@@ -60,14 +60,14 @@ const HomePage = () => {
               <Link to="/products?vehicleType=bike" className="btn-accent text-lg px-8 py-3 hover:scale-105 transition-transform">
                 🏍️ Shop Bike Parts
               </Link>
-              <Link to="/products?vehicleType=car" className="bg-white text-primary-500 font-semibold py-3 px-8 rounded-lg hover:bg-blue-50 transition-all text-lg hover:scale-105">
+              <Link to="/products?vehicleType=car" className="bg-primary-600 dark:bg-white text-white dark:text-primary-500 font-semibold py-3 px-8 rounded-lg hover:bg-primary-700 dark:hover:bg-blue-50 transition-all text-lg hover:scale-105">
                 🚗 Shop Car Parts
               </Link>
               <Link to="/products?vehicleType=tractor" className="bg-green-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-green-600 transition-all text-lg hover:scale-105">
                 🚜 Shop Tractor Parts
               </Link>
             </div>
-            <div className="flex gap-8 mt-8 text-sm text-blue-200 dark:text-gray-400">
+            <div className="flex gap-8 mt-8 text-sm text-primary-600 dark:text-gray-400">
               <span>✅ 10,000+ Parts</span>
               <span>✅ 500+ Dealers</span>
               <span>✅ Free Shipping*</span>
@@ -205,11 +205,11 @@ const HomePage = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-gradient-to-br from-primary-500 to-primary-700 dark:from-gray-800 dark:to-gray-900 text-white py-16">
+      <section className="bg-gradient-to-br from-steel-100 via-steel-50 to-primary-50 dark:from-gray-800 dark:to-gray-900 text-steel-800 dark:text-white py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold">⭐ What Our Customers Say</h2>
-            <p className="text-blue-200 dark:text-gray-400 mt-2">Join thousands of satisfied customers</p>
+            <p className="text-steel-500 dark:text-gray-400 mt-2">Join thousands of satisfied customers</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
@@ -232,16 +232,16 @@ const HomePage = () => {
                 rating: 5,
               },
             ].map((t, i) => (
-              <div key={i} className="bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 dark:hover:bg-gray-800/70 transition-all duration-300">
+              <div key={i} className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-sm hover:shadow-md dark:hover:bg-gray-800/70 transition-all duration-300">
                 <div className="flex gap-1 mb-3">
                   {[...Array(t.rating)].map((_, j) => (
-                    <span key={j} className="text-accent-300">⭐</span>
+                    <span key={j} className="text-accent-400">⭐</span>
                   ))}
                 </div>
-                <p className="text-blue-100 dark:text-gray-300 mb-4 leading-relaxed">"{t.text}"</p>
+                <p className="text-steel-700 dark:text-gray-300 mb-4 leading-relaxed">"{t.text}"</p>
                 <div>
-                  <p className="font-bold">{t.name}</p>
-                  <p className="text-sm text-blue-200 dark:text-gray-400">{t.role}</p>
+                  <p className="font-bold text-steel-800 dark:text-white">{t.name}</p>
+                  <p className="text-sm text-steel-500 dark:text-gray-400">{t.role}</p>
                 </div>
               </div>
             ))}
