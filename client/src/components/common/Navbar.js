@@ -87,7 +87,7 @@ const Navbar = () => {
               className="p-2 rounded-lg hover:bg-steel-100 dark:hover:bg-gray-700 transition-all duration-200 hover:scale-110"
               title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
-              {darkMode ? <FiSun className="text-accent-300 text-lg" /> : <FiMoon className="text-lg" />}
+              {darkMode ? <FiSun className="text-accent-300 text-lg" /> : <FiMoon className="text-steel-600 dark:text-white text-lg" />}
             </button>
 
             {user ? (
@@ -113,7 +113,7 @@ const Navbar = () => {
           {/* Mobile toggle */}
           <div className="md:hidden flex items-center gap-2">
             <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-steel-100 dark:hover:bg-gray-700 transition">
-              {darkMode ? <FiSun className="text-accent-300" /> : <FiMoon />}
+              {darkMode ? <FiSun className="text-accent-300" /> : <FiMoon className="text-steel-600 dark:text-white" />}
             </button>
             <button className="text-2xl" onClick={() => setMobileOpen(!mobileOpen)}>
               {mobileOpen ? <FiX /> : <FiMenu />}

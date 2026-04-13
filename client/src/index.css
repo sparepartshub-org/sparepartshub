@@ -59,6 +59,9 @@
 /* Smooth theme transition */
 html {
   @apply transition-colors duration-300;
+  /* Explicit light color-scheme prevents system dark-mode from affecting
+     browser-native elements (scrollbars, inputs) when the app is in light mode.
+     Overridden by html.dark rule (higher specificity) when dark mode is active. */
   color-scheme: light;
 }
 
